@@ -11,7 +11,7 @@ def is_human?(player)
     when "N", "n"
         return false
     else
-        retry
+        return is_human?(player)
     end
 end
 
