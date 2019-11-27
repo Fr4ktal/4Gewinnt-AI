@@ -11,6 +11,18 @@ class PlayerBase
         return gets.chomp
     end
 
+    def win()
+        return
+    end
+
+    def loose()
+        return
+    end
+
+    def draw()
+        return
+    end
+
     def write(field)
         for i in 0..8 
             print "[#{field[i]}]"

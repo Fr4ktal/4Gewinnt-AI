@@ -30,7 +30,6 @@ class Game
     end
 
     def end(condition)
-        self.write
         case condition
         when END_CONDITION_WIN
             puts "#{@activePlayer.name} won the game."
@@ -44,7 +43,7 @@ class Game
         input = @activePlayer.getInput.capitalize until ["Y", "N"].include? input
         exit if input.eql? "N"
         Game.new(@player1, @player2) if input.eql? "Y"
-        fail RuntimeError "Unexcepted Value of String!"
+        fail RuntimeError "Unexcepted Char!"
     end
 
     def checkWin
