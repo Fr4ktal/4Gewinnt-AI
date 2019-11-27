@@ -9,8 +9,8 @@ class PlayerHuman < PlayerBase
         return super
     end
 
-    def write(field)
-        super(field)
+    def write(field, msg="Player #{@name}")
+        super(field, msg)
     end
 
     def is_ai?
