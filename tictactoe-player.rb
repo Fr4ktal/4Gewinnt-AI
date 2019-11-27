@@ -10,12 +10,21 @@ class PlayerBase
     def getInput
         return gets.chomp
     end
+
+    def write(field)
+        for i in 0..8 
+            print "[#{field[i]}]"
+            puts "" if ((i+1)%3).zero?
+        end
+        puts "Player #{@name}"
+    end
     
     def is_ai?
     	return false
     end
 
     def getPos(field)
+        self.write(field)
         return rand(0..8)
     end
 end

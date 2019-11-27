@@ -9,6 +9,10 @@ class PlayerAI < PlayerBase
     def getInput
         return super
     end
+
+    def write(field)
+        super(field)
+    end
     
     def snapshot(field)
     	return if @gamestates.keys.includes?(field)

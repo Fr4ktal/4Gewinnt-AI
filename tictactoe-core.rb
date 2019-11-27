@@ -13,7 +13,6 @@ class Game
 
     def run
         loop do
-            self.write
             self.setMarker
             self.end(END_CONDITION_WIN) if self.checkWin
             self.end(END_CONDITION_DRAW) if self.checkDraw
@@ -46,15 +45,6 @@ class Game
         exit if input.eql? "N"
         Game.new(@player1, @player2) if input.eql? "Y"
         fail RuntimeError "Unexcepted Value of String!"
-    end
-        
-
-    def write
-        for i in 0..8 
-            print "[#{@field[i]}]"
-            puts "" if ((i+1)%3).zero?
-        end
-        puts "Player #{@activePlayer.name}"
     end
 
     def checkWin
