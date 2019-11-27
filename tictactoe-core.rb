@@ -4,8 +4,8 @@ END_CONDITION_DRAW=1
 class Game
     def initialize(player1, player2, loops=0)
         @field = Array.new(9, " ")
-        @player1, @player2 = player1, player2
-        @activePlayer = @player1
+        @activePlayer = player1
+        @nonActivePlayer = player2
         @symbols = {player1 => "X", player2 => "O"}
         @loops = loops
         self.run
@@ -14,13 +14,9 @@ class Game
     def run
         loop do
             self.setMarker
-            self.end(END_CONDITION_WIN) if self.checkWin
-            self.end(END_CONDITION_DRAW) if self.checkDraw
-            if @activePlayer.eql?(@player1)
-                @activePlayer = @player2
-            else
-                @activePlayer = @player1
-            end
+            return self.end(END_CONDITION_WIN) if self.checkWin
+            return self.end(END_CONDITION_DRAW) if self.checkDraw
+            @activePlayer, @nonActivePlayer = @nonActivePlayer, @activePlayer
         end
     end
 
@@ -32,18 +28,18 @@ class Game
     def end(condition)
         case condition
         when END_CONDITION_WIN
-            puts "#{@activePlayer.name} won the game."
+            @activePlayer.write(@field, "#{@activePlayer.name} won the game.")
         when END_CONDITION_DRAW
-            puts "The game ended in a draw."
+            @activePlayer.write(@field, "The game ended in a draw.")
         else
-            puts "The game ended for an unexepted reason."
+            @activePlayer.write(@field, "The game ended for an unexepted reason.")
         end
-        Game.new(@player1, @player2, @loops-1) if @loops>0
+        Game.new(@nonActivePlayer, @activePlayer, @loops-1) if @loops>0
         puts "Do you want to restart the game? (y/n)"
         input = @activePlayer.getInput.capitalize until ["Y", "N"].include? input
-        exit if input.eql? "N"
-        Game.new(@player1, @player2) if input.eql? "Y"
-        fail RuntimeError "Unexcepted Char!"
+        return if input.eql? "N"
+        Game.new(@nonActivePlayer, @activePlayer) if input.eql? "Y"
+        fail
     end
 
     def checkWin

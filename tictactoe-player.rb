@@ -23,7 +23,7 @@ class PlayerBase
         return
     end
 
-    def write(field)
+    def write(field, msg="Player #{@name}")
         for i in 0..8 
             print "[#{field[i]}]"
             puts "" if ((i+1)%3).zero?

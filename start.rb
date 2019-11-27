@@ -17,11 +17,13 @@ end
 
 def start
     if is_human?(1)
-        p1=PlayerHuman.new(gets("Name:").chop)
+        print "Name: "
+        p1=PlayerHuman.new(gets.chop)
     else
         p1=PlayerAI.new("AI-1")
     end
     if is_human?(2)
+        print "Name: "
         p2=PlayerHuman.new(gets("Name:").chop)
     else
         p2=PlayerAI.new("AI-2")

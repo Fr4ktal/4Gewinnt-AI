@@ -12,8 +12,8 @@ class PlayerAI < PlayerBase
         return super
     end
 
-    def write(field)
-        super(field)
+    def write(field, msg="Player #{@name}")
+        super(field, msg)
     end
 
     def loose()
@@ -22,20 +22,21 @@ class PlayerAI < PlayerBase
     
     def snapshot(field)
         @lastGamestate = field
-    	return if @gamestates.keys.includes?(field)
-	    free=[]
-    	field.map.with_index{ |x, pos| free.push(pos) if x.eql?(" ")}
-    	@gamestates={field => free}
+    	return false if @gamestates.has_key?(field)
+        free=[]
+        field.map.with_index{ |x, pos| free.push(pos) if x.eql?(" ")}
+        @gamestates.store(field, free)
+        return true
     end
 
     def evalPos(field)
-        return rand(@gamestates[field]) unless @gamestates[field].empty?
+        return @gamestates[field].sample unless @gamestates[field].empty?
         return rand(0..8)
     end
 
     def getPos(field)
-        snapshot(field)
-        return @lastMove = evalPos(field)
-    	return super(field)
+        self.snapshot(field)
+        @lastMove = self.evalPos(field)
+        return @lastMove
     end
 end
