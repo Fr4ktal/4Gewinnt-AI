@@ -2,7 +2,6 @@ END_CONDITION_WIN=0
 END_CONDITION_DRAW=1
 
 class Game
-    attr_reader :field
     def initialize(player1, player2, loops=0)
         @field = Array.new(9, " ")
         @player1, @player2 = player1, player2
@@ -27,7 +26,7 @@ class Game
     end
 
     def setMarker
-        pos = @activePlayer.getPos until (0..8).include?(pos) && @field[pos].eql?(" ")
+        pos = @activePlayer.getPos(@field) until (0..8).include?(pos) && @field[pos].eql?(" ")
         @field[pos] = @symbols[@activePlayer]
     end
 
@@ -41,19 +40,19 @@ class Game
         else
             puts "The game ended for an unexepted reason."
         end
-        self.initialize(@player1, @player2, @loops-1) if @loops>0
+        Game.new(@player1, @player2, @loops-1) if @loops>0
         puts "Do you want to restart the game? (y/n)"
-        input = @activePlayer.getInput.lower until ["y", "n"].include? input
-        exit if input.eql? "n"
-        self.initialize(@player1, @player2) if input.eql? "y"
-        throw RuntimeError "Unexcepted Value of String!"
+        input = @activePlayer.getInput.capitalize until ["Y", "N"].include? input
+        exit if input.eql? "N"
+        Game.new(@player1, @player2) if input.eql? "Y"
+        fail RuntimeError "Unexcepted Value of String!"
     end
         
 
     def write
         for i in 0..8 
             print "[#{@field[i]}]"
-            puts "" if (i%3).zero?
+            puts "" if ((i+1)%3).zero?
         end
         puts "Player #{@activePlayer.name}"
     end

@@ -10,8 +10,12 @@ class PlayerBase
     def getInput
         return gets.chomp
     end
+    
+    def is_ai?
+    	return false
+    end
 
-    def getPos
-        return 0
+    def getPos(field)
+        return rand(0..8)
     end
 end

@@ -8,8 +8,12 @@ class PlayerHuman < PlayerBase
     def getInput
         return super
     end
+    
+    def is_ai?
+    	return false
+    end
 
-    def getPos
+    def getPos(field)
         loop do 
             input = self.getInput.to_i
             return input-1 if (1..9).include?(input)
