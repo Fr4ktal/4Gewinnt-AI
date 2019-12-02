@@ -32,8 +32,8 @@ class PlayerAI < PlayerBase
         bestScore = -Float::INFINITY
         score = 0
 
-        return 1 if TicTacToe::checkWin(field, symbol)
-        return -1 if TicTacToe::checkWin(field, otherSymbol)
+        return 1 if TicTacToe::Field.new(field).checkWin(field, symbol)
+        return -1 if TicTacToe::Field.checkWin(field, otherSymbol)
         freeSpaces = field.map.with_index { |element, i| i if element.eql? " "}
         return 0 if freeSpaces.empty?
         freeSpaces.each {

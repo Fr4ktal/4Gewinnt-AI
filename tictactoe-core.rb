@@ -4,7 +4,7 @@ END_CONDITION_DRAW=1
 module TicTacToe
     class Game
         def initialize(player1, player2, loops=0)
-            @field = Array.new(9, " ")
+            @field = Field.new(Array.new(9, " "))
             @activePlayer = player1
             @nonActivePlayer = player2
             player1.symbol="X", player2.symbol="O"
@@ -17,8 +17,8 @@ module TicTacToe
         def run
             loop do
                 self.setMarker
-                return self.end(END_CONDITION_WIN) if self.checkWin(@activePlayer.symbol)
-                return self.end(END_CONDITION_DRAW) if self.checkDraw(field)
+                return self.end(END_CONDITION_WIN) if @field.field.checkWin(@activePlayer.symbol)
+                return self.end(END_CONDITION_DRAW) if @field.field.checkDraw()
                 @activePlayer, @nonActivePlayer = @nonActivePlayer, @activePlayer
             end
         end
@@ -46,55 +46,66 @@ module TicTacToe
         end
     end
 
-    public
-    def checkWin(field, symbol)
-        return true if (checkRows(field, symbol) || checkCols(field, symbol) || checkDiag(field, symbol))
-        return false
-    end
-
-    def checkRows(field, symbol)
-        for row in 1..3
-            return true if checkRow(field, row, symbol)
+    class Field
+        attr_accessor :field
+        def initialize(field)
+            @field = field
         end
-        return false
-    end
 
-    def checkRow(field, row, symbol)
-        pos = (row-1)*3
-        3.times {
-            return false unless field[pos].eql?(symbol)
-            pos += 1
-        }
-        return true
-    end
-
-    def checkCols(field, symbol)
-        for col in 1..3
-            return true if checkCol(field, col, symbol)
+        public
+        def checkWin(field=@field, symbol)
+            return true if (checkRows(field, symbol) || checkCols(field, symbol) || checkDiag(field, symbol))
+            return false
         end
-        return false
-    end
 
-    def checkCol(field, col, symbol)
-        pos = (col-1)
-        3.times do
-            return false unless field[pos].eql?(symbol)
-            pos += 3
+        def checkRows(field, symbol)
+            for row in 1..3
+                return true if checkRow(field, row, symbol)
+            end
+            return false
         end
-        return true
-    end
 
-    def checkDiag(field, symbol)
-        return false unless field[4].eql?(symbol)
-        return true if ((field[0].eql?(symbol)) && (field[8].eql?(symbol)))
-        return true if ((field[2].eql?(symbol)) && (field[6].eql?(symbol)))
-        return false
-    end
+        def checkRow(field, row, symbol)
+            pos = (row-1)*3
+            3.times {
+                return false unless field[pos].eql?(symbol)
+                pos += 1
+            }
+            return true
+        end
 
-    def checkDraw(field)
-        return true unless field.include?(" ")
-        return false
-    end 
+        def checkCols(field, symbol)
+            for col in 1..3
+                return true if checkCol(field, col, symbol)
+            end
+            return false
+        end
+
+        def checkCol(field, col, symbol)
+            pos = (col-1)
+            3.times do
+                return false unless field[pos].eql?(symbol)
+                pos += 3
+            end
+            return true
+        end
+
+        def checkDiag(field, symbol)
+            return false unless field[4].eql?(symbol)
+            return true if ((field[0].eql?(symbol)) && (field[8].eql?(symbol)))
+            return true if ((field[2].eql?(symbol)) && (field[6].eql?(symbol)))
+            return false
+        end
+
+        def checkDraw(field=@field)
+            return true unless field.include?(" ")
+            return false
+        end 
+        
+        def inspect
+            return @field.to_s
+        end
+    end
 
 end
 
