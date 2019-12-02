@@ -28,6 +28,6 @@ def start
     else
         p2=PlayerAI.new("AI-2")
     end
-    Game.new(p1,p2)
+    TicTacToe::Game.new(p1,p2)
 end
 start

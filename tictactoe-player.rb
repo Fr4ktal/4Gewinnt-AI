@@ -1,9 +1,11 @@
 class PlayerBase
     attr_reader :name
+    attr_accessor :symbol
 
     protected
     def initialize(name)
         @name=name
+        @symbol = ""
     end
 
     public
@@ -28,7 +30,7 @@ class PlayerBase
             print "[#{field[i]}]"
             puts "" if ((i+1)%3).zero?
         end
-        puts "Player #{@name}"
+        puts msg
     end
     
     def is_ai?

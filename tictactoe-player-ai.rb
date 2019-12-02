@@ -1,11 +1,13 @@
 require_relative "tictactoe-player.rb"
 class PlayerAI < PlayerBase
 
+    attr_reader :IS_AI
+    attr_accessor :otherSymbol
+
     def initialize(name)
+        @IS_AI=true
+        @otherSymbol=nil
         super(name)
-        @gamestates={}
-        @lastMove = -1
-        @lastGamestate = []
     end
 
     def getInput
@@ -16,27 +18,29 @@ class PlayerAI < PlayerBase
         super(field, msg)
     end
 
-    def loose()
-        @gamestates[@lastGamestate].delete(@lastMove)
-    end
-    
-    def snapshot(field)
-        @lastGamestate = field
-    	return false if @gamestates.has_key?(field)
-        free=[]
-        field.map.with_index{ |x, pos| free.push(pos) if x.eql?(" ")}
-        @gamestates.store(field, free)
-        return true
-    end
-
     def evalPos(field)
-        return @gamestates[field].sample unless @gamestates[field].empty?
+        return minimax(field, @symbol, @otherSymbol, true)
         return rand(0..8)
     end
 
     def getPos(field)
-        self.snapshot(field)
-        @lastMove = self.evalPos(field)
-        return @lastMove
+        return evalPos(field)
+    end
+
+    def minimax(field, symbol, otherSymbol, isMaximizing)
+        freeSpaces = []
+        bestScore = -Float::INFINITY
+        score = 0
+
+        return 1 if TicTacToe::checkWin(field, symbol)
+        return -1 if TicTacToe::checkWin(field, otherSymbol)
+        freeSpaces = field.map.with_index { |element, i| i if element.eql? " "}
+        return 0 if freeSpaces.empty?
+        freeSpaces.each {
+            isMaximizing = !isMaximizing
+            score = minimax(field, @otherSymbol, @symbol, isMaximizing)
+            bestScore = score if score > bestScore
+        }
+        return bestScore
     end
 end
