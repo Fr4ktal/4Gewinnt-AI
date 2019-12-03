@@ -6,11 +6,16 @@ class PlayerBase
     def initialize(name)
         @name=name
         @symbol = ""
+        @is_ai=false
     end
 
     public
     def getInput
         return gets.chomp
+    end
+    
+    def is_ai?
+    	return is_ai
     end
 
     def win()

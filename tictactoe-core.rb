@@ -8,8 +8,8 @@ module TicTacToe
             @activePlayer = player1
             @nonActivePlayer = player2
             player1.symbol="X", player2.symbol="O"
-            player1.otherSymbol = player2.symbol if player1.IS_AI
-            player2.otherSymbol = player1.symbol if player2.IS_AI
+            player1.otherSymbol = player2.symbol if player1.is_ai?
+            player2.otherSymbol = player1.symbol if player2.is_ai?
             @loops = loops
             self.run
         end
@@ -17,25 +17,25 @@ module TicTacToe
         def run
             loop do
                 self.setMarker
-                return self.end(END_CONDITION_WIN) if @field.field.checkWin(@activePlayer.symbol)
-                return self.end(END_CONDITION_DRAW) if @field.field.checkDraw()
+                return self.end(END_CONDITION_WIN) if @field.checkWin(@activePlayer.symbol)
+                return self.end(END_CONDITION_DRAW) if @field.checkDraw()
                 @activePlayer, @nonActivePlayer = @nonActivePlayer, @activePlayer
             end
         end
 
         def setMarker
             pos = @activePlayer.getPos(@field) until (0..8).include?(pos) && @field[pos].eql?(" ")
-            @field[pos] = @activePlayer.symbol
+            @field.field[pos] = @activePlayer.symbol
         end
 
         def end(condition)
             case condition
             when END_CONDITION_WIN
-                @activePlayer.write(@field, "#{@activePlayer.name} won the game.")
+                @activePlayer.write(@field.field, "#{@activePlayer.name} won the game.")
             when END_CONDITION_DRAW
-                @activePlayer.write(@field, "The game ended in a draw.")
+                @activePlayer.write(@field.field, "The game ended in a draw.")
             else
-                @activePlayer.write(@field, "The game ended for an unexepted reason.")
+                @activePlayer.write(@field.field, "The game ended for an unexepted reason.")
             end
             TicTacToe::Game.new(@nonActivePlayer, @activePlayer, @loops-1) if @loops>0
             puts "Do you want to restart the game? (y/n)"
@@ -56,6 +56,10 @@ module TicTacToe
         def checkWin(field=@field, symbol)
             return true if (checkRows(field, symbol) || checkCols(field, symbol) || checkDiag(field, symbol))
             return false
+        end
+        
+        def [](i)
+        	return @field[i]
         end
 
         def checkRows(field, symbol)

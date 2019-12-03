@@ -1,13 +1,12 @@
 require_relative "tictactoe-player.rb"
 class PlayerAI < PlayerBase
 
-    attr_reader :IS_AI
     attr_accessor :otherSymbol
 
     def initialize(name)
-        @IS_AI=true
         @otherSymbol=nil
         super(name)
+        @is_ai=true
     end
 
     def getInput
@@ -32,9 +31,9 @@ class PlayerAI < PlayerBase
         bestScore = -Float::INFINITY
         score = 0
 
-        return 1 if TicTacToe::Field.new(field).checkWin(field, symbol)
-        return -1 if TicTacToe::Field.checkWin(field, otherSymbol)
-        freeSpaces = field.map.with_index { |element, i| i if element.eql? " "}
+        return 1 if field.checkWin(symbol)
+        return -1 if field.checkWin(otherSymbol)
+        freeSpaces = field.field.map.with_index { |element, i| i if element.eql? " "}
         return 0 if freeSpaces.empty?
         freeSpaces.each {
             isMaximizing = !isMaximizing
