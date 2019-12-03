@@ -7,6 +7,7 @@ class PlayerAI < PlayerBase
         @otherSymbol=nil
         super(name)
         @is_ai=true
+        @firstturn=true
     end
 
     def getInput
@@ -18,6 +19,8 @@ class PlayerAI < PlayerBase
     end
 
     def evalPos(field)
+    	return rand(0..8) if @firstturn
+    	@firstturn=false
         return minimax(field, @symbol, @otherSymbol, true)
         return rand(0..8)
     end
