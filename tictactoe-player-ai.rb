@@ -4,8 +4,8 @@ class PlayerAI < PlayerBase
     attr_accessor :otherSymbol
 
     def initialize(name)
-        @otherSymbol=nil
         super(name)
+    	@otherSymbol=""
         @is_ai=true
         @firstturn=true
     end
@@ -30,20 +30,20 @@ class PlayerAI < PlayerBase
         return evalPos(field)
     end
 
-    def minimax(field, symbol, otherSymbol, isMaximizing, stackLevel)
+    def minimax(field, symbol, otherSymbol, isMaximizing)
         freeSpaces = []
         bestScore = -Float::INFINITY
         score = 0
 
         return 1 if field.checkWin(symbol)
         return -1 if field.checkWin(otherSymbol)
-        freeSpaces = field.field.map.with_index { |element, i| i if element.eql? " "}
-        return 0 if freeSpaces.empty?
+        return 0 if field.checkDraw
+		field.field.map.with_index { |element, i| freeSpaces.push(i) if element.eql? " "}
         freeSpaces.each { |i|
         	dummyField=field
-        	dummyField[i]=symbol
+        	dummyField.field[i]=symbol
             nextIsMaximizing = !isMaximizing
-            score = minimax(dummyField, @otherSymbol, @symbol, nextIsMaximizing, stackLevel+1)
+            score = minimax(dummyField, otherSymbol, symbol, nextIsMaximizing)
             if isMaximizing
 				bestScore = score if score > bestScore
 			else

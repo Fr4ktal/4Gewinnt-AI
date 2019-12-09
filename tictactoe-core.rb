@@ -64,7 +64,8 @@ module TicTacToe
         end
 
         def checkRows(field, symbol)
-            for row in 1..3
+            for row in 1..3 do
+            	puts "CheckRows: "+row.to_s+", "+symbol
                 return true if checkRow(field, row, symbol)
             end
             return false
@@ -72,10 +73,10 @@ module TicTacToe
 
         def checkRow(field, row, symbol)
             pos = (row-1)*3
-            3.times {
+            3.times do
                 return false unless field[pos].eql?(symbol)
                 pos += 1
-            }
+            end
             return true
         end
 

@@ -25,7 +25,7 @@ def start
     p1.symbol="X"
     if is_human?(2)
         print "Name: "
-        p2=PlayerHuman.new(gets("Name:").chop)
+        p2=PlayerHuman.new(gets.chop)
     else
         p2=PlayerAI.new("AI-2")
     end
