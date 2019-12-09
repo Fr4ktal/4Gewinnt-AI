@@ -24,4 +24,5 @@ class PlayerHuman < PlayerBase
             return input-1 if (1..9).include?(input)
         end
     end
+    
 end

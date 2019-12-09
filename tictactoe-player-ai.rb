@@ -45,9 +45,9 @@ class PlayerAI < PlayerBase
         return 0 if field.checkDraw
 		field.field.map.with_index { |element, i| freeSpaces.push(i) if element.eql? " "}
         freeSpaces.each { |i|
-        	dummyField=field
-        	dummyField.field[i]=symbol
-            score = minimax(dummyField, otherSymbol, symbol, !isMaximizing, depth+1)
+        	tempField=field
+        	tempField.field[i]=symbol
+            score = minimax(tempField, otherSymbol, symbol, !isMaximizing, depth+1)
             if isMaximizing
 				bestScore = score if score > bestScore
 				bestPos=i

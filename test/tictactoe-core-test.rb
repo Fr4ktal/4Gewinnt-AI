@@ -16,5 +16,8 @@ describe TicTacToe::Field do
 		it "must be false if the field is empty" do
 			@field.win("X").must_equal(false)
 		end
-		it "must be false if another 'O' has won"
-			@field.win("X")
+		it "must be false if another 'O' has won" do
+			@field[1
+			@field.win("X").must_equal(false)
+		end
+	end
