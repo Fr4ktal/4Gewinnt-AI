@@ -17,18 +17,6 @@ class PlayerBase
     	return false
     end
 
-    def win()
-        return
-    end
-
-    def loose()
-        return
-    end
-
-    def draw()
-        return
-    end
-
     def write(field, msg="Player #{@name}")
         for i in 0..8 
             print "[#{field[i]}]"
