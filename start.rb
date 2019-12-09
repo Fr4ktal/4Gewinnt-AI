@@ -22,12 +22,16 @@ def start
     else
         p1=PlayerAI.new("AI-1")
     end
+    p1.symbol="X"
     if is_human?(2)
         print "Name: "
         p2=PlayerHuman.new(gets("Name:").chop)
     else
         p2=PlayerAI.new("AI-2")
     end
+    p2.symbol="O"
+	p1.otherSymbol=p2.symbol if p1.is_ai?
+	p2.otherSymbol=p1.symbol if p2.is_ai?
     TicTacToe::Game.new(p1,p2)
 end
 start

@@ -19,17 +19,18 @@ class PlayerAI < PlayerBase
     end
 
     def evalPos(field)
-    	return rand(0..8) if @firstturn
-    	@firstturn=false
+    	if @firstturn
+    		@firstturn=false
+    		return rand(0..8) if @firstturn
+    end
         return minimax(field, @symbol, @otherSymbol, true)
-        return rand(0..8)
     end
 
     def getPos(field)
         return evalPos(field)
     end
 
-    def minimax(field, symbol, otherSymbol, isMaximizing)
+    def minimax(field, symbol, otherSymbol, isMaximizing, stackLevel)
         freeSpaces = []
         bestScore = -Float::INFINITY
         score = 0
@@ -38,10 +39,16 @@ class PlayerAI < PlayerBase
         return -1 if field.checkWin(otherSymbol)
         freeSpaces = field.field.map.with_index { |element, i| i if element.eql? " "}
         return 0 if freeSpaces.empty?
-        freeSpaces.each {
-            isMaximizing = !isMaximizing
-            score = minimax(field, @otherSymbol, @symbol, isMaximizing)
-            bestScore = score if score > bestScore
+        freeSpaces.each { |i|
+        	dummyField=field
+        	dummyField[i]=symbol
+            nextIsMaximizing = !isMaximizing
+            score = minimax(dummyField, @otherSymbol, @symbol, nextIsMaximizing, stackLevel+1)
+            if isMaximizing
+				bestScore = score if score > bestScore
+			else
+				bestScore=score if score<bestScore
+			end
         }
         return bestScore
     end

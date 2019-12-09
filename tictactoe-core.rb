@@ -7,9 +7,10 @@ module TicTacToe
             @field = Field.new(Array.new(9, " "))
             @activePlayer = player1
             @nonActivePlayer = player2
-            player1.symbol="X", player2.symbol="O"
-            player1.otherSymbol = player2.symbol if player1.is_ai?
-            player2.otherSymbol = player1.symbol if player2.is_ai?
+            player1.symbol="X"
+            player2.symbol="O"
+			player1.otherSymbol=player2.symbol if player1.is_ai?
+			player2.otherSymbol=player1.symbol if player2.is_ai?
             @loops = loops
             self.run
         end
