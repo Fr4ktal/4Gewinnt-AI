@@ -6,11 +6,8 @@ class PlayerAI < PlayerBase
     def initialize(name)
         super(name)
     	@otherSymbol=""
+        @is_ai=true
         @firstturn=true
-    end
-    
-    def is_ai?
-    	return true
     end
 
     def getInput
@@ -24,22 +21,20 @@ class PlayerAI < PlayerBase
     def evalPos(field)
     	if @firstturn
     		@firstturn=false
-    		return rand(9) if @firstturn
-	    end
+    		return rand(0..8) if @firstturn
+    end
         return minimax(field, @symbol, @otherSymbol, true)
     end
 
     def getPos(field)
-        pos= evalPos(field)
-        puts pos.to_s+"; "+@otherSymbol
-        return pos
+        return evalPos(field)
     end
 
-    def minimax(field, symbol, otherSymbol, isMaximizing, depth=0)
+    def minimax(field, symbol, otherSymbol, isMaximizing)
         freeSpaces = []
         bestScore = -Float::INFINITY
-        bestPos=rand(9)
         score = 0
+
         return 1 if field.checkWin(symbol)
         return -1 if field.checkWin(otherSymbol)
         return 0 if field.checkDraw
@@ -47,14 +42,13 @@ class PlayerAI < PlayerBase
         freeSpaces.each { |i|
         	dummyField=field
         	dummyField.field[i]=symbol
-            score = minimax(dummyField, otherSymbol, symbol, !isMaximizing, depth+1)
+            nextIsMaximizing = !isMaximizing
+            score = minimax(dummyField, otherSymbol, symbol, nextIsMaximizing)
             if isMaximizing
 				bestScore = score if score > bestScore
-				bestPos=i
 			else
 				bestScore=score if score<bestScore
 			end
-			return bestPos if depth.eql? 0
         }
         return bestScore
     end

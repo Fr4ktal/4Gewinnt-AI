@@ -49,7 +49,7 @@ module TicTacToe
 
     class Field
         attr_accessor :field
-        def initialize(field)
+        def initialize(field=Array.new(9," "))
             @field = field
         end
 
@@ -63,15 +63,17 @@ module TicTacToe
         	return @field[i]
         end
 
-        def checkRows(field, symbol)
-            for row in 1..3 do
-            	puts "CheckRows: "+row.to_s+", "+symbol
-                return true if checkRow(field, row, symbol)
-            end
+        def checkRows(field=@field, symbol)
+        	row=1
+        	3.times do
+        		puts "CheckRows: "+row.to_s+", "+symbol
+            	return true if checkRow(field, row, symbol)
+            	row+=1
+        	end
             return false
         end
 
-        def checkRow(field, row, symbol)
+        def checkRow(field=@field, row, symbol)
             pos = (row-1)*3
             3.times do
                 return false unless field[pos].eql?(symbol)
@@ -80,14 +82,14 @@ module TicTacToe
             return true
         end
 
-        def checkCols(field, symbol)
+        def checkCols(field=@field, symbol)
             for col in 1..3
                 return true if checkCol(field, col, symbol)
             end
             return false
         end
 
-        def checkCol(field, col, symbol)
+        def checkCol(field=@field, col, symbol)
             pos = (col-1)
             3.times do
                 return false unless field[pos].eql?(symbol)
@@ -96,7 +98,7 @@ module TicTacToe
             return true
         end
 
-        def checkDiag(field, symbol)
+        def checkDiag(field=@field, symbol)
             return false unless field[4].eql?(symbol)
             return true if ((field[0].eql?(symbol)) && (field[8].eql?(symbol)))
             return true if ((field[2].eql?(symbol)) && (field[6].eql?(symbol)))

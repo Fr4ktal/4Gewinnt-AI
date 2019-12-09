@@ -6,6 +6,7 @@ class PlayerBase
     def initialize(name)
         @name=name
         @symbol = ""
+        @is_ai=false
     end
 
     public
@@ -14,7 +15,7 @@ class PlayerBase
     end
     
     def is_ai?
-    	return false
+    	return is_ai
     end
 
     def win()
