@@ -6,7 +6,6 @@ class PlayerAI < PlayerBase
     def initialize(name)
         super(name)
     	@otherSymbol=""
-        @firstturn=true
     end
     
     def is_ai?
@@ -22,40 +21,52 @@ class PlayerAI < PlayerBase
     end
 
     def evalPos(field)
-    	if @firstturn
-    		@firstturn=false
-    		return rand(9) if @firstturn
-	    end
-        return minimax(field, @symbol, @otherSymbol, true)
+        return minimax(field, @symbol, @otherSymbol)
     end
 
     def getPos(field)
         pos= evalPos(field)
-        puts pos.to_s+"; "+@otherSymbol
         return pos
     end
 
-    def minimax(field, symbol, otherSymbol, isMaximizing, depth=0)
+    def minimax(field, symbol, otherSymbol, depth=0)
         freeSpaces = []
-        bestScore = -Float::INFINITY
-        bestPos=rand(9)
+        pos={
+            -1=>[],
+            0=>[],
+            1=> []
+            }
         score = 0
+        bestScore = -1
         return 1 if field.checkWin(symbol)
         return -1 if field.checkWin(otherSymbol)
         return 0 if field.checkDraw
-		field.field.map.with_index { |element, i| freeSpaces.push(i) if element.eql? " "}
-        freeSpaces.each { |i|
-        	tempField=field
-        	tempField.field[i]=symbol
-            score = minimax(tempField, otherSymbol, symbol, !isMaximizing, depth+1)
-            if isMaximizing
-				bestScore = score if score > bestScore
-				bestPos=i
-			else
-				bestScore=score if score<bestScore
-			end
-			return bestPos if depth.eql? 0
+        field.field.each.with_index { |element, i|
+			freeSpaces.push(i) if element.eql? " "
         }
-        return bestScore
+        freeSpaces.each { |i|
+        	tempField=TicTacToe::Field.new(field.field)
+            tempField.field[i]=symbol
+            score = minimax(tempField, otherSymbol, symbol, depth+1)
+            if depth.eql? 0
+                case score
+                when 1
+                    pos[1].push(i)
+                when 0
+                    pos[0].push(i)
+                when -1
+                    pos[-1].push(i)
+                end
+            else
+                bestScore = score if score > bestScore
+            end
+        }
+        if depth.eql? 0
+            return pos[1].sample unless pos[1].empty?
+            return pos[0].sample unless pos[0].empty?
+            return pos[-1].sample unless pos[-1].empty?
+        else
+            return bestScore
+        end
     end
 end

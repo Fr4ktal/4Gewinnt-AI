@@ -66,7 +66,7 @@ module TicTacToe
         def checkRows(field=@field, symbol)
         	row=1
         	3.times do
-        		puts "CheckRows: "+row.to_s+", "+symbol
+        		
             	return true if checkRow(field, row, symbol)
             	row+=1
         	end
