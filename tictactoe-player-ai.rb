@@ -20,14 +20,9 @@ class PlayerAI < PlayerBase
         super(field, msg)
     end
 
-    def evalPos(field)
-    	return 4 if field.field[4].eql?" "
-        return minimax(field, @symbol, @otherSymbol)
-    end
-
     def getPos(field)
-        pos= evalPos(field)
-        return pos
+        return 4 if field.field[4].eql?" "
+        return minimax(field, @symbol, @otherSymbol)
     end
 
     def minimax(field, symbol, otherSymbol, depth=0)
