@@ -65,8 +65,6 @@ class PlayerAI < PlayerBase
                 when -1
                     pos[:restMayLoose].push(i)
                 end
-                write(field)
-                puts pos.inspect
             else
                 bestScore = score if score > bestScore
             end
