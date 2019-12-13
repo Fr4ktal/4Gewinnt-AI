@@ -41,7 +41,7 @@ module TicTacToe
             TicTacToe::Game.new(@nonActivePlayer, @activePlayer, @loops-1) if @loops>0
             puts "Do you want to restart the game? (y/n)"
             input = @activePlayer.getInput.capitalize until ["Y", "N"].include? input
-            return if input.eql? "N"
+            return if input == "N"
             TicTacToe::Game.new(@nonActivePlayer, @activePlayer) if input.eql? "Y"
             fail
         end
@@ -50,7 +50,8 @@ module TicTacToe
     class Field
         attr_accessor :field
         def initialize(field=Array.new(9," "))
-            @field = field
+            @field = []
+            field.each{|e| @field.push(e)}"
         end
 
         public

@@ -21,6 +21,7 @@ class PlayerAI < PlayerBase
     end
 
     def evalPos(field)
+    	return 4 if field.field[4].eql?" "
         return minimax(field, @symbol, @otherSymbol)
     end
 
@@ -30,17 +31,21 @@ class PlayerAI < PlayerBase
     end
 
     def minimax(field, symbol, otherSymbol, depth=0)
-        freeSpaces = []
-        pos={
-            -1=>[],
-            0=>[],
-            1=> []
-            }
-        score = 0
-        bestScore = -1
         return 1 if field.checkWin(symbol)
         return -1 if field.checkWin(otherSymbol)
         return 0 if field.checkDraw
+        
+        freeSpaces = []
+        pos={
+            :winNext=>[],
+            :preventLoose=> [],
+            :restMayWin=> [],
+            :restMayLoose=>[],
+            :rest=>[]
+            }
+        score = 0
+        bestScore = -1
+        
         field.field.each.with_index { |element, i|
 			freeSpaces.push(i) if element.eql? " "
         }
@@ -49,24 +54,32 @@ class PlayerAI < PlayerBase
             tempField.field[i]=symbol
             score = minimax(tempField, otherSymbol, symbol, depth+1)
             if depth.eql? 0
+            	pos[:winNext].push(i) if tempField.checkWin(symbol)
+            	tempField.field[i]=otherSymbol
+            	pos[:preventLoose].push(i) if tempField.checkWin(otherSymbol)
                 case score
                 when 1
-                    pos[1].push(i)
+                    pos[:restMayWin].push(i)
                 when 0
-                    pos[0].push(i)
+                    pos[:rest].push(i)
                 when -1
-                    pos[-1].push(i)
+                    pos[:restMayLoose].push(i)
                 end
+                write(field)
+                puts pos.inspect
             else
                 bestScore = score if score > bestScore
             end
         }
         if depth.eql? 0
-            return pos[1].sample unless pos[1].empty?
-            return pos[0].sample unless pos[0].empty?
-            return pos[-1].sample unless pos[-1].empty?
+        	return pos[:winNext].sample unless pos[:winNext].empty?
+        	return pos[:preventLoose].sample unless pos[:preventLoose].empty?
+            return pos[:restMayWin].sample unless pos[:restMayWin].empty?
+            return pos[:rest].sample unless pos[:rest].empty?
+            return pos[:restMayLoose].sample unless pos[:restMayLoose].empty?
         else
             return bestScore
         end
     end
+    	
 end
