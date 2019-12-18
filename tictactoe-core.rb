@@ -50,8 +50,7 @@ module TicTacToe
     class Field
         attr_accessor :field
         def initialize(field=Array.new(9," "))
-            @field = []
-            field.each{|e| @field.push(e)}
+            @field = field.dup()
         end
 
         public
