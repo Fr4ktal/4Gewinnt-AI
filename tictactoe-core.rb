@@ -51,7 +51,7 @@ module TicTacToe
         attr_accessor :field
         def initialize(field=Array.new(9," "))
             @field = []
-            field.each{|e| @field.push(e)}"
+            field.each{|e| @field.push(e)}
         end
 
         public

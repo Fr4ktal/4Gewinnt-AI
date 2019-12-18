@@ -9,25 +9,21 @@ class PlayerBase
     end
 
     public
-    def getInput
-        return gets.chomp
+    def getInput()
+        return gets().chomp()
     end
     
-    def is_ai?
+    def is_ai?()
     	return false
     end
 
     def write(field, msg="Player #{@name}")
         for i in 0..8 
             print "[#{field[i]}]"
-            puts "" if ((i+1)%3).zero?
+            puts "" if ((i+1)%3).zero?()
         end
         puts msg
-    end
-    
-    def is_ai?
-    	return false
-    end
+	end
 
     def getPos(field)
         self.write(field)

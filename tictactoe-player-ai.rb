@@ -8,11 +8,11 @@ class PlayerAI < PlayerBase
     	@otherSymbol=""
     end
     
-    def is_ai?
+    def is_ai?()
     	return true
     end
 
-    def getInput
+    def getInput()
         return super
     end
 
@@ -21,14 +21,14 @@ class PlayerAI < PlayerBase
     end
 
     def getPos(field)
-        return 4 if field.field[4].eql?" "
+        return 4 if field.field[4].eql?(" ")
         return minimax(field, @symbol, @otherSymbol)
     end
 
     def minimax(field, symbol, otherSymbol, depth=0)
         return 1 if field.checkWin(symbol)
         return -1 if field.checkWin(otherSymbol)
-        return 0 if field.checkDraw
+        return 0 if field.checkDraw()
         
         freeSpaces = []
         pos={
@@ -42,13 +42,13 @@ class PlayerAI < PlayerBase
         bestScore = -1
         
         field.field.each.with_index { |element, i|
-			freeSpaces.push(i) if element.eql? " "
+			freeSpaces.push(i) if element.eql?(" ")
         }
         freeSpaces.each { |i|
         	tempField=TicTacToe::Field.new(field.field)
             tempField.field[i]=symbol
             score = minimax(tempField, otherSymbol, symbol, depth+1)
-            if depth.eql? 0
+            if depth.eql?(0)
             	pos[:winNext].push(i) if tempField.checkWin(symbol)
             	tempField.field[i]=otherSymbol
             	pos[:preventLoose].push(i) if tempField.checkWin(otherSymbol)
@@ -64,7 +64,7 @@ class PlayerAI < PlayerBase
                 bestScore = score if score > bestScore
             end
         }
-        if depth.eql? 0
+        if depth.eql?(0)
         	return pos[:winNext].sample unless pos[:winNext].empty?
         	return pos[:preventLoose].sample unless pos[:preventLoose].empty?
             return pos[:restMayWin].sample unless pos[:restMayWin].empty?
